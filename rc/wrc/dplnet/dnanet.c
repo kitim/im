@@ -1,5 +1,6 @@
 #include <Windows.h>
 #include <stdio.h>
+#include "dnanet.h"
 
 #pragma comment(lib, "ws2_32.lib")
 
