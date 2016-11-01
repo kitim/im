@@ -125,9 +125,11 @@
             // 
             // maskedTextBox1
             // 
+            this.maskedTextBox1.HideSelection = false;
             this.maskedTextBox1.Location = new System.Drawing.Point(95, 11);
             this.maskedTextBox1.Mask = "192.168.0.1";
             this.maskedTextBox1.Name = "maskedTextBox1";
+            this.maskedTextBox1.ResetOnPrompt = false;
             this.maskedTextBox1.ResetOnSpace = false;
             this.maskedTextBox1.Size = new System.Drawing.Size(133, 21);
             this.maskedTextBox1.TabIndex = 9;
