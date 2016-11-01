@@ -7,6 +7,5 @@ extern "C" __declspec(dllexport) int dnaAccept(int, char*, int);
 extern "C" __declspec(dllexport) int dnaWrite(int, char*, int, char*, int);
 extern "C" __declspec(dllexport) int dnaRead(int, char*, int, char*, int);
 
-
 #endif
 
