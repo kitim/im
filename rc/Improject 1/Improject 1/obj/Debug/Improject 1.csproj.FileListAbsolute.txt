@@ -1,0 +1,9 @@
+L:\대학생 박희수\창업동아리\program\Improject 1\Improject 1\bin\Debug\Improject 1.exe.config
+L:\대학생 박희수\창업동아리\program\Improject 1\Improject 1\bin\Debug\Improject 1.exe
+L:\대학생 박희수\창업동아리\program\Improject 1\Improject 1\bin\Debug\Improject 1.pdb
+L:\대학생 박희수\창업동아리\program\Improject 1\Improject 1\obj\Debug\Improject 1.csprojResolveAssemblyReference.cache
+L:\대학생 박희수\창업동아리\program\Improject 1\Improject 1\obj\Debug\Improject_1.Form1.resources
+L:\대학생 박희수\창업동아리\program\Improject 1\Improject 1\obj\Debug\Improject_1.Properties.Resources.resources
+L:\대학생 박희수\창업동아리\program\Improject 1\Improject 1\obj\Debug\Improject 1.csproj.GenerateResource.Cache
+L:\대학생 박희수\창업동아리\program\Improject 1\Improject 1\obj\Debug\Improject 1.exe
+L:\대학생 박희수\창업동아리\program\Improject 1\Improject 1\obj\Debug\Improject 1.pdb
