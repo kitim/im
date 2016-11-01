@@ -26,5 +26,10 @@ namespace wfrc
       byte [] ip = Encoding.Default.GetBytes("127.0.0.1");
       dn.DNAOpen(ip, 20000, 0x00);
     }
+
+    private void maskedTextBox1_MaskInputRejected(object sender, MaskInputRejectedEventArgs e)
+    {
+
+    }
   }
 }

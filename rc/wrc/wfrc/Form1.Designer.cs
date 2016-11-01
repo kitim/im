@@ -31,12 +31,12 @@
             this.button1 = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
             this.textBox2 = new System.Windows.Forms.TextBox();
+            this.maskedTextBox1 = new System.Windows.Forms.MaskedTextBox();
             this.SuspendLayout();
             // 
             // button1
@@ -72,13 +72,6 @@
             this.label1.TabIndex = 2;
             this.label1.Text = "IP ADDRESS";
             // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(92, 11);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(136, 21);
-            this.textBox1.TabIndex = 3;
-            // 
             // comboBox2
             // 
             this.comboBox2.FormattingEnabled = true;
@@ -105,7 +98,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(199, 42);
+            this.label3.Location = new System.Drawing.Point(199, 43);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(29, 12);
             this.label3.TabIndex = 6;
@@ -129,17 +122,27 @@
             this.textBox2.Size = new System.Drawing.Size(262, 303);
             this.textBox2.TabIndex = 8;
             // 
+            // maskedTextBox1
+            // 
+            this.maskedTextBox1.Location = new System.Drawing.Point(95, 11);
+            this.maskedTextBox1.Mask = "192.168.0.1";
+            this.maskedTextBox1.Name = "maskedTextBox1";
+            this.maskedTextBox1.ResetOnSpace = false;
+            this.maskedTextBox1.Size = new System.Drawing.Size(133, 21);
+            this.maskedTextBox1.TabIndex = 9;
+            this.maskedTextBox1.MaskInputRejected += new System.Windows.Forms.MaskInputRejectedEventHandler(this.maskedTextBox1_MaskInputRejected);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 379);
+            this.Controls.Add(this.maskedTextBox1);
             this.Controls.Add(this.textBox2);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.comboBox2);
-            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.button1);
@@ -155,12 +158,12 @@
     private System.Windows.Forms.Button button1;
     private System.Windows.Forms.ComboBox comboBox1;
     private System.Windows.Forms.Label label1;
-    private System.Windows.Forms.TextBox textBox1;
     private System.Windows.Forms.ComboBox comboBox2;
     private System.Windows.Forms.Label label2;
     private System.Windows.Forms.Label label3;
     private System.Windows.Forms.Button button2;
     private System.Windows.Forms.TextBox textBox2;
+    private System.Windows.Forms.MaskedTextBox maskedTextBox1;
   }
 }
 
