@@ -15,11 +15,4 @@ void main()
 
 
 	dnaAccept(sd, "127.0.0.1", 0);
-		//dnaRead(sd, buf, BUFSIZE, 0, 9600);
-
-
-	
-
-	
-	
-}
+		//dnaRead(sd, buf, BUFSIZE, 0, 9600);}
