@@ -35,12 +35,13 @@
             this.label3 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
             this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
+            this.maskedTextBox1 = new System.Windows.Forms.MaskedTextBox();
             this.SuspendLayout();
             // 
             // comboBox1
             // 
+            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Items.AddRange(new object[] {
             "101",
@@ -49,8 +50,10 @@
             "104",
             "105"});
             this.comboBox1.Location = new System.Drawing.Point(14, 35);
+            this.comboBox1.MaxLength = 4;
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(87, 20);
+            this.comboBox1.Sorted = true;
             this.comboBox1.TabIndex = 1;
             // 
             // label1
@@ -64,6 +67,8 @@
             // 
             // comboBox2
             // 
+            this.comboBox2.Cursor = System.Windows.Forms.Cursors.Default;
+            this.comboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox2.FormattingEnabled = true;
             this.comboBox2.Items.AddRange(new object[] {
             "101",
@@ -108,18 +113,9 @@
             this.textBox2.Location = new System.Drawing.Point(15, 61);
             this.textBox2.Multiline = true;
             this.textBox2.Name = "textBox2";
-            this.textBox2.ReadOnly = true;
             this.textBox2.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.textBox2.Size = new System.Drawing.Size(305, 306);
             this.textBox2.TabIndex = 8;
-            this.textBox2.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(111, 10);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(154, 21);
-            this.textBox1.TabIndex = 9;
             // 
             // button1
             // 
@@ -131,12 +127,21 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // maskedTextBox1
+            // 
+            this.maskedTextBox1.Location = new System.Drawing.Point(94, 8);
+            this.maskedTextBox1.Margin = new System.Windows.Forms.Padding(0);
+            this.maskedTextBox1.Mask = "000.000.0.0";
+            this.maskedTextBox1.Name = "maskedTextBox1";
+            this.maskedTextBox1.Size = new System.Drawing.Size(167, 21);
+            this.maskedTextBox1.TabIndex = 9;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(329, 379);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.maskedTextBox1);
             this.Controls.Add(this.textBox2);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.label3);
@@ -162,8 +167,8 @@
     private System.Windows.Forms.Label label3;
     private System.Windows.Forms.Button button2;
     private System.Windows.Forms.TextBox textBox2;
-    private System.Windows.Forms.TextBox textBox1;
     private System.Windows.Forms.Button button1;
+    private System.Windows.Forms.MaskedTextBox maskedTextBox1;
 
   }
 }

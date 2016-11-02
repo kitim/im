@@ -18,39 +18,35 @@ namespace wfrc
         public Form1()
         {
             InitializeComponent();
-
-            textBox1.Text = "---.---.-.-";
+            maskedTextBox1.Text = "___.___._._.";            
+            maskedTextBox1.Text = "00000000";
             dn = new dplnet();
-
-
-            dn = new dplnet();
+            button2.Click += " 안녕!!";
 
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            textBox2.Text = textBox1.Text + " 접속";
+            textBox2.Text = maskedTextBox1.Text + " 접속";
             byte [] ip = Encoding.Default.GetBytes("127.0.0.1");
             dn.DNAOpen(ip, 20000, 0x00);
 
         }
 
 
-        private void maskedTextBox1_MaskInputRejected(object sender, MaskInputRejectedEventArgs e)
-        {
-
-        }
-
-        private void textBox2_TextChanged(object sender, EventArgs e)
-        {
-            
-        }
 
         private void button2_Click(object sender, EventArgs e)
         {
-
-            textBox2.Text = comboBox1.Text + " 에서 " + comboBox2.Text + " 으로 이동 중";
+            
+            //if (comboBox1.SelectedIndex == comboBox2.SelectedIndex)
+             //textBox2.Text = "정지" ;
+           //else
+           //    textBox2.Text = (comboBox1.SelectedIndex + " 에서 " + comboBox2.SelectedIndex + "으로 이동 중");
+          
         }
+
+
+
 
     }
 }
