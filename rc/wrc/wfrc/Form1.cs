@@ -28,6 +28,7 @@ namespace wfrc
         private void button1_Click(object sender, EventArgs e)
         {
             textBox2.Text = maskedTextBox1.Text + " 접속";
+            
             byte [] ip = Encoding.Default.GetBytes("127.0.0.1");
             dn.DNAOpen(ip, 20000, 0x00);
 
@@ -39,11 +40,11 @@ namespace wfrc
         {}
         private void button2_Click_1(object sender, EventArgs e)
         {
-            
-                if (comboBox1.SelectedItem == comboBox2.SelectedItem)
+
+            if (comboBox1.SelectedIndex == comboBox2.SelectedIndex)
                 textBox2.Text = "정지" ;
             else
-                textBox2.Text = (comboBox1.SelectedItem + " 에서 " + comboBox2.SelectedItem + "으로 이동 중");
+                textBox2.Text = (comboBox1.SelectedItem + " 에서 " + comboBox2.SelectedItem + "으로 이동 중...");
        
 
         }
