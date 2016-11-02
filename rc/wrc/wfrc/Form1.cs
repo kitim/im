@@ -21,7 +21,7 @@ namespace wfrc
             maskedTextBox1.Text = "___.___._._.";            
             maskedTextBox1.Text = "00000000";
             dn = new dplnet();
-            button2.Click += " 안녕!!";
+            
 
         }
 
@@ -36,17 +36,16 @@ namespace wfrc
 
 
         private void button2_Click(object sender, EventArgs e)
+        {}
+        private void button2_Click_1(object sender, EventArgs e)
         {
             
-            //if (comboBox1.SelectedIndex == comboBox2.SelectedIndex)
-             //textBox2.Text = "정지" ;
-           //else
-           //    textBox2.Text = (comboBox1.SelectedIndex + " 에서 " + comboBox2.SelectedIndex + "으로 이동 중");
-          
+                if (comboBox1.SelectedItem == comboBox2.SelectedItem)
+                textBox2.Text = "정지" ;
+            else
+                textBox2.Text = (comboBox1.SelectedItem + " 에서 " + comboBox2.SelectedItem + "으로 이동 중");
+       
+
         }
-
-
-
-
     }
 }

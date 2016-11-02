@@ -103,10 +103,12 @@
             // 
             this.button2.Location = new System.Drawing.Point(273, 34);
             this.button2.Name = "button2";
+            this.button2.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.button2.Size = new System.Drawing.Size(47, 21);
             this.button2.TabIndex = 7;
             this.button2.Text = "이동";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click_1);
             // 
             // textBox2
             // 
