@@ -3,6 +3,16 @@
 
 #define BUFSIZE 512
 
+void err_display(char *msg)
+{
+	LPVOID lpMsgBuf;
+	FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER |
+		FORMAT_MESSAGE_FROM_SYSTEM, NULL, WSAGetLastError(),
+		MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+		(LPTSTR)&lpMsgBuf, 0, NULL);
+	printf("[%s]%s", msg, (LPCTSTR)lpMsgBuf);
+	LocalFree(lpMsgBuf);
+}
 int dnaOpen(char* ip, int port, int type)
 {
 	int e = -1;
@@ -36,7 +46,7 @@ int dnaOpen(char* ip, int port, int type)
 		{
 			WSADATA wsa;
 			int retval;
-			printf("TCP server");
+			printf("TCP server\r\n");
 
 			if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0) {
 				return -1;
@@ -49,11 +59,12 @@ int dnaOpen(char* ip, int port, int type)
 			serveraddr.sin_port = htons(port);
 			serveraddr.sin_addr.s_addr = htonl(INADDR_ANY);
 			retval = bind(listen_sock, (SOCKADDR*)&serveraddr, sizeof(serveraddr));
+			printf("bind retval = %d \r\n", retval);
+			retval = listen(listen_sock, SOMAXCONN);
+			printf("listen retval = %d \r\n", retval);
 			
-			if (retval == -1) {
-				printf("\nbind false\n");
-			}
-			retval = listen(listen_sock, 5);
+			return retval;
+			
 		}
 	}
 	return e;
@@ -71,16 +82,47 @@ int dnaClose(int sd)
 int dnaAccept(int sd, char* ip, int sz)
 {
 	int e = -1;
-	struct sockaddr_in addr;
-	int _sz = 0;
+	SOCKET client_sock;
+	SOCKADDR_IN clientaddr;
+	int addrlen , retval;
+	char buf[BUFSIZE + 1];
 
-	//printf("----- dnaAccept -----");
-	_sz = sizeof(addr);
-	e = accept(sd, (SOCKADDR*)&addr, &_sz);
-	printf("\n[TCP 서버] 클라이언트 접속 : IP주소=%s, 포트번호=%d\n", inet_ntoa(addr.sin_addr), ntohs(addr.sin_port));
+	while (1)
+	{
+		//printf("----- accept -----");
+		addrlen = sizeof(clientaddr);
+		printf("////////////%d\r\n", sd);
+		e = accept(sd, (SOCKADDR*)&clientaddr, &addrlen);
+		printf("client_sock = %d \r\n", e);
+
+		if (client_sock == INVALID_SOCKET) 
+		{
+			err_display("accept()");
+			continue;
+		}
+		printf("\n[TCP 서버] 클라이언트 접속 : IP주소=%s, 포트번호=%d\n", inet_ntoa(clientaddr.sin_addr), ntohs(clientaddr.sin_port));
+		
+		
+		
+		while (1) 
+		{
+			retval = recv(client_sock, buf, BUFSIZE, 0);
+			
+			buf[retval] = '\0';
+			//printf("[TCP/%s:%d] %s\n", inet_ntoa(clientaddr.sin_addr), ntohs(clientaddr.sin_port), buf);
+
+			retval = send(client_sock, buf, retval, 0);
+			
+		}
+		
+		
+	}
+
+	//closesocket(client_sock);
+	//printf("[TCP 서버] 클라이언트 종료 : IP주소=%s, 포트번호=%d\n", inet_ntoa(clientaddr.sin_addr), ntohs(clientaddr.sin_port));
 	return e;	
 }
-
+/*
 int dnaRead(int sd, char* buf, int sz, char* ip, int port)
 {
 	int e = -1;
@@ -123,3 +165,4 @@ int dnaWrite(int sd, char* buf, int sz, char* ip, int port)
 	return e;
 }
 
+*/
