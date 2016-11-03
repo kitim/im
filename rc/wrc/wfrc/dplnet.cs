@@ -38,42 +38,44 @@ namespace wfrc
     }
       
     public int DNAClose(int sd)
-  {
-        int e = 0;
-        e = dnaClose(sd);
-        
-        return e;
-
-  }
-       
-      public int DNAAccept(int sd,Type[] ip,int sz)
-      {
-          int e = 0;
-          fixed()
-          {
-              e = dnaAccept(sd, ,sz);
-          }
-          return e;
-      }
-   
-      public int DNARead(int sd, byte[] buf, int sz, byte[] ip, int port);
-  {
-      int e = 0;
-      fixed()
-      {
-       e = dnaRead(sd,);
-  }
-    return e;
-  }
-      public int DNAWrite(int sd, char* buf, int sz, char* ip, int port);
     {
         int e = 0;
-            fixed()
-            {
-                e = sendto(sd, buf, sz, 0, 0, sockaddr);
-            }   
-            return e;
-    }   
+        e = dnaClose(sd);
+        return e;
+    }
+       
+    public int DNAAccept(int sd, byte[] ip,int sz)
+    {
+        int e = 0;
+          
+        fixed(byte* p = ip)
+        {
+            e = dnaAccept(sd, (char*)p,sz);
+        }
+        return e;
+    }
+   
+    public int DNARead(int sd, byte[] buf, int sz, byte[] ip, int port)
+    {
+        int e = 0;
+        fixed(byte* b = buf)
+        fixed(byte* p = ip)
+        {
+            e = dnaRead(sd, (char*)b, sz, (char*)p, port);
+        }
+        return e;
+    }
 
+    public int DNAWrite(int sd, byte[] buf, int sz, byte[] ip, int port)
+    {
+        int e = 0;
+        fixed(byte* b = buf)
+        fixed(byte* p = ip)
+        {
+            e = dnaWrite(sd, (char*)b, sz, (char*)p, port);
+        }   
+        return e;
+    }
+  }
 }
       
