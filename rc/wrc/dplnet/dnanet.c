@@ -1,5 +1,7 @@
 #include <Windows.h>
 #include <stdio.h>
+#include "dnanet.h"
+#pragma comment(lib, "ws2_32.lib")
 
 #define BUFSIZE 512
 
@@ -42,7 +44,7 @@ int dnaOpen(char* ip, int port, int type)
 			ZeroMemory(&client_addr, sizeof(client_addr));
 			client_addr.sin_family = AF_INET;
 			client_addr.sin_port = htons(port);
-			client_addr.sin_addr.s_addr = htonl(ip);
+			client_addr.sin_addr.s_addr = inet_addr(ip);
 			connect(tcs, (struct sockaddr*)&client_addr, sizeof(struct sockaddr));
 			return tcs;
 		}
@@ -109,7 +111,7 @@ int dnaRead(int sd, char* buf, int sz, char* ip, int port)
 	}
 	else
 	{
-		e = recvfrom(sd, buf, sz, &addr, &addr, &_sz);
+		e = recvfrom(sd, buf, sz, 0, (struct sockaddr*)&addr, &_sz);
 	}
 	return e;
 }
