@@ -63,9 +63,9 @@ namespace wfrc
                 textBox2.Text += "정지";
             else
                 textBox2.Text += (comboBox1.SelectedItem + " 에서 " + comboBox2.SelectedItem + "으로 이동 중...");
-
             textBox2.Text += "\r\n";
-            //MessageBox.Show(this.textBox2.Text);
+            byte[] wbuf = Encoding.Default.GetBytes(comboBox1.Text+comboBox2.Text);
+            dn.DNAWrite(sd, wbuf, textBox2.Text.Length, null, 0);
         }
 
         private void timer1_Tick(object sender, EventArgs e)
