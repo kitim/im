@@ -1,10 +1,9 @@
 #include <Windows.h>
 #include <stdio.h>
 #include "dnanet.h"
+#pragma comment(lib, "ws2_32.lib")
 
 #define BUFSIZE 512
-
-#pragma comment(lib, "ws2_32.lib")
 
 void err_display(char *msg)
 {
@@ -22,6 +21,11 @@ int dnaOpen(char* ip, int port, int type)
 	WSADATA wsa;
 	int retval;
 
+	if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0) 
+	{
+		return -1;
+	}
+
 	if (type & 0x80 == 0x80)  /// UDP
 	{
 		if (type & 0x08 == 0x80) /// CLIENT
@@ -36,25 +40,24 @@ int dnaOpen(char* ip, int port, int type)
 	}
 	else /// TCP
 	{
-		if (type & 0x08 == 0x80) /// CLIENT
+		if (type == 0x08) /// CLIENT
 		{
-			struct sockaddr_in server_addr;
+			SOCKADDR_IN client_addr;
 			
 			SOCKET tcs = socket(PF_INET, SOCK_STREAM, 0);
 
-			ZeroMemory(&server_addr, sizeof(server_addr));
-			server_addr.sin_family = AF_INET;
-			server_addr.sin_port = htons(port);
-			server_addr.sin_addr.s_addr = htonl(INADDR_ANY);
+			ZeroMemory(&client_addr, sizeof(client_addr));
+			client_addr.sin_family = AF_INET;
+			client_addr.sin_port = htons(port);
+			client_addr.sin_addr.s_addr = inet_addr(ip);
+			e = connect(tcs, (struct sockaddr*)&client_addr, sizeof(struct sockaddr));
+      if ( e < 0 ) tcs = e;
+			return tcs;
 		}
 		else  /// SERVER
 		{
 			printf("TCP server\r\n");
 
-			if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0) 
-			{
-				return -1;
-			}
 			SOCKET listen_sock = socket(AF_INET, SOCK_STREAM, 0);
 
 			SOCKADDR_IN serveraddr;
@@ -110,7 +113,7 @@ int dnaRead(int sd, char* buf, int sz, char* ip, int port)
 	}
 	else
 	{
-		e = recvfrom(sd, buf, sz, 0, (sockaddr*)&addr, &_sz);
+		e = recvfrom(sd, buf, sz, 0, (struct sockaddr*)&addr, &_sz);
 	}
 	return e;
 }

@@ -32,7 +32,11 @@ void main()
  *(FARPROC*)&dn.dnaWrite = GetProcAddress(dn.h, "dnaWrite");
  *(FARPROC*)&dn.dnaRead = GetProcAddress(dn.h, "dnaRead");
 
-  e = dn.dnaOpen("127.0.0.1", 2654, 0);
+  e = dn.dnaOpen("127.0.0.1", 2654, 0x08);
+
+
+
+  while ( 1 ) Sleep(1);
 
   if (e > 0)
   {
