@@ -21,6 +21,11 @@ int dnaOpen(char* ip, int port, int type)
 	WSADATA wsa;
 	int retval;
 
+	if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0) 
+	{
+		return -1;
+	}
+
 	if (type & 0x80 == 0x80)  /// UDP
 	{
 		if (type & 0x08 == 0x80) /// CLIENT
@@ -35,7 +40,7 @@ int dnaOpen(char* ip, int port, int type)
 	}
 	else /// TCP
 	{
-		if (type == 0x80) /// CLIENT
+		if (type == 0x08) /// CLIENT
 		{
 			SOCKADDR_IN client_addr;
 			
@@ -45,17 +50,14 @@ int dnaOpen(char* ip, int port, int type)
 			client_addr.sin_family = AF_INET;
 			client_addr.sin_port = htons(port);
 			client_addr.sin_addr.s_addr = inet_addr(ip);
-			connect(tcs, (struct sockaddr*)&client_addr, sizeof(struct sockaddr));
+			e = connect(tcs, (struct sockaddr*)&client_addr, sizeof(struct sockaddr));
+      if ( e < 0 ) tcs = e;
 			return tcs;
 		}
 		else  /// SERVER
 		{
 			printf("TCP server\r\n");
 
-			if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0) 
-			{
-				return -1;
-			}
 			SOCKET listen_sock = socket(AF_INET, SOCK_STREAM, 0);
 
 			SOCKADDR_IN serveraddr;
