@@ -1,89 +1,81 @@
 #include <SoftwareSerial.h>
-#include "ESP8266.h"  //위에꺼랑 이거랑 같이쓰면오류안남
+//#include "ESP8266.h"  //위에꺼랑 이거랑 같이쓰면오류안남
 #define BAUD_RATE     115200
-#define UART_WRITE         0
-#define UART_READ          1
-#define UART_BUF_CNT       2
-#define UART_BUF_SZ        64
-
-const char UART_COMMAND[][UART_BUF_SZ] =
-{
-  "AT\r\n",              //0
-  "AT+CWMODE=1\r\n",     //1
-  "AT+CWJAP_CUR=\"DALS\",\"DAL@D510\"", ///2
-};
-int UART_COMMAND_DELAY[] =
-{
-  100,
-  1000,
-  20000,
-};
-
+#define UART_BUF_SZ        128
+#define CBUF_COUNT         2
+#define UART_OK            0
+#define UART_FAIL          -1
+#define UART_PENDDING      -2
 
 SoftwareSerial srl(6, 7); // RX, TX
 
-char buf[UART_BUF_CNT][UART_BUF_SZ];
+char buf[UART_BUF_SZ];
 int uart_index = 0;
 int uart_command_index = 0;
+int run_command = 1;
+char dbg[80];
+
+char cbuf[CBUF_COUNT][UART_BUF_SZ];
+int  cindex = 0;
 
 void setup()
 {
   // set the data rate for the SoftwareSerial port
   srl.begin(BAUD_RATE);
-
   while (!srl.available()) ;
-  memset(buf, 0, sizeof(char)*UART_BUF_CNT*UART_BUF_SZ);
-  Serial.begin(9600);
+  memset(buf, 0, sizeof(char)*UART_BUF_SZ);
 }
 
-void bufClear(int idx)
+void bufClear()
 {
   uart_index = 0;
-  memset(buf[idx], 0, sizeof(char)*UART_BUF_SZ);
+  memset(buf, 0, sizeof(char)*UART_BUF_SZ);
 }
 
-int checkAck(int* cmd)
+
+int checkAck(char* ack, int sz)
 {
-  int e = -1;
+  int e = UART_PENDDING;
   int idx = 0;
-  for ( idx = 0; idx<UART_BUF_SZ-1 ; idx++, uart_index++ )
+  char c = 0;
+  int i = 0;
+  int _sz = sz-1;
+  for ( idx = 0; idx<UART_BUF_SZ-1 ; idx++ )
   {
-    buf[UART_READ][uart_index] = srl.read();
-
-    if (  (uart_index>0) && (buf[UART_READ][uart_index-1]=='O') && (buf[UART_READ][uart_index]=='K') )
+    c = srl.read();
+    if ( c >= 0 )
     {
-      Serial.write("checkAck SUCCESS \r\n");
-      bufClear(UART_READ);
-      e = idx;
-      *cmd = 1;
-      break;
+      buf[uart_index] = c;
+      if (  uart_index>0  ) 
+      {
+        for ( i=0 ; i<sz ; i++ )
+        {
+          if ( (buf[uart_index-(i)] == *(ack+_sz) ) )
+          {
+            _sz--;
+            if ( _sz <= 0 )
+            {
+              bufClear();
+              e = UART_OK;
+              break;
+            }
+          }
+        }
+      }
+      uart_index++;
     }
-    if ( (uart_index>0) && (buf[UART_READ][uart_index-1]=='\r') && (buf[UART_READ][uart_index]=='\n')  )
-    {
-      Serial.write("checkAck SUCCESS 2\r\n");
-      bufClear(UART_READ);
-      *cmd = 1;
-      break;
-    }
-    
-  }
-
-  if ( e < 0 )
-  {
-    bufClear(UART_READ);
-    //Serial.write("checkAck FAIL \r\n");
   }
   return e;
 }
 
-int readUart(int count, int* cmd)
+int readUart(int count, char* ack, int sz)
 {
   int e = -1;
   int idx = 0;
   for ( idx = 0 ; idx<count ; idx++ )
   {
-    e = checkAck(cmd);
-    if ( e > 0 )
+    e = checkAck(ack, sz);
+    if ( e == UART_OK  )
     {
       break;
     }
@@ -91,51 +83,145 @@ int readUart(int count, int* cmd)
   return e;  
 }
 
-int writeAT(int idx, int count, int* cmd)
+int writeAT(char* cmd)
 {
-  int e = -1;
-  if ( *cmd > 0 ) srl.write(UART_COMMAND[idx], strlen(UART_COMMAND[idx]));
-  if ( readUart(count, cmd) > 0 )
+  return srl.write(cmd, strlen(cmd));
+}
+
+int writeATex(char* cmd, char* arg)
+{
+  char _cmd[UART_BUF_SZ];
+  if ( arg )
   {
-    e = idx;
+    sprintf(_cmd, "%s=%s\r\n", cmd, arg);
+  }
+  else
+  {
+    sprintf(_cmd, "%s\r\n", cmd);
+  }
+  return srl.write(_cmd, strlen(_cmd));
+}
+
+int writeEx(char* buf, int sz, int msec)
+{
+  int e = 0;
+  char _sb[UART_BUF_SZ];
+  sprintf(_sb, "%d", sz+2);
+  
+  writeATex("AT+CIPSENDEX", _sb);  //8...
+  e = readUart(1000, "> ", 2);
+  if ( e == UART_OK )
+  {
+    sprintf(_sb, "%s\\0", buf);
+    writeATex(_sb, sz+2);
+    delay(msec);
   }
   return e;
 }
 
+
 void loop()
 {
-  int e = -1;
-  int c = 1;  //// 1:Command Enable,   0:Command Disable
+  char c = 0;
+  int e = UART_OK;
   uart_command_index = 0;
-  
-  while ( 1 )
+
+  delay(4000);
+
+  writeATex("ATE1", 0);    //// 0  == '\0'  : NULL
+  e = readUart(100, "OK", 2);
+
+  writeATex("AT", 0);
+  e = readUart(100, "OK", 2);
+
+  writeATex("AT+CWQAP", 0);
+  e = readUart(2000, "OK", 2);
+
+  writeATex("AT+CWMODE", "1");
+  e = readUart(100, "OK", 2);
+
+  while (1  )
   {
-    e = writeAT(uart_command_index, UART_COMMAND_DELAY[uart_command_index], &c);
-    if ( e>0 )
+    if ( e == UART_OK )
     {
-      if ( uart_command_index == 0 )
-      {
-        uart_command_index = 1;
-      }
-      else if ( uart_command_index == 1 )
-      {
-        uart_command_index = 2;
-      }
-      else if ( uart_command_index == 2 )
-      {
-        uart_command_index = 0;
-        break;
-      }
+      writeATex("AT+CWJAP_CUR", "\"DALS\",\"DAL@D510\"");
+      e = UART_FAIL;
     }
-    
+    e = readUart(1000, "OK", 2);
+    if ( e == UART_OK )
+    {
+      break;
+    }
   }
 
-  while (1 )
+  writeATex("AT+CIPMUX", "0");
+  e = readUart(100, "OK", 2);
+
+
+  while ( 1 )
   {
-    //writeAT(0, 1000, &c);
-    delay(2000);
+    if ( e == UART_OK )
+    {
+      writeATex("AT+CIPSTART", "\"TCP\",\"192.168.0.16\",2654");
+      e = UART_FAIL;
+    }
+    e = readUart(1000, "OK", 2);
+    if ( e == UART_OK )
+    {
+      break;
+    }
+  }
+
+
+
+  bufClear();
+  e = UART_FAIL;
+
+  while(1)
+  {
+    writeATex("ATE1", 0);
+    e = readUart(1000, "OK", 2);
+
+    c = srl.read();
+    if ( c >= 0 )
+    {
+      if ( c == '+' )
+      {
+        cindex = 0;
+        uart_index = 0;
+      }
+
+      buf[uart_index] = c;
+      uart_index++;
+      if ( c == ':' )
+      {
+        cindex ++;
+        uart_index = 0;
+      }
+
+      if ( cindex == CBUF_COUNT )
+      {
+        /////// 문자열 분리
+        /////// +IPD,4:1,3:    //+IPD,8:101,303;
+        ///////
+        
+        writeATex("AT", 0);
+        e = readUart(1000, "OK", 2);
+
+        e = UART_OK;
+      }
+       
+    }
+
+    if ( e == UART_OK )
+    {
+      writeATex("ATE0", 0);
+      e = readUart(1000, "OK", 2);
+
+      writeEx("OK\r\n", 4, 500);
+      e = UART_FAIL;
+    }
   }
 
   
 }
-
