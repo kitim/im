@@ -52,15 +52,16 @@ namespace wfrc
                 {
                     btn_open_sts = 0;
                     button1.Text="접속";
-                    textBox2.Text += "CLOSE\r\n";
+                    textBox2.Text += textBox1.Text+" CLOSE\r\n";
                     dn.DNAClose(sd);
                 }            
             }
-        private void button2_Click_1(object sender, EventArgs e)
+        private void button2_Click_1(object 
+            sender, EventArgs e)
         {
 
             if (comboBox1.SelectedIndex == comboBox2.SelectedIndex)
-                textBox2.Text += "정지";
+                textBox2.Text += " 이동 불가 ";
             else
                 textBox2.Text += (comboBox1.SelectedItem + " 에서 " + comboBox2.SelectedItem + "으로 이동 시작...");
             textBox2.Text += "\r\n";

@@ -19,6 +19,7 @@ void main()
   int csd = 0;
   char buf[1024];
   int sz = 0;
+  int idx = 0;
 
   tagDNANET dn;
 
@@ -32,11 +33,8 @@ void main()
  *(FARPROC*)&dn.dnaWrite = GetProcAddress(dn.h, "dnaWrite");
  *(FARPROC*)&dn.dnaRead = GetProcAddress(dn.h, "dnaRead");
 
-  e = dn.dnaOpen("127.0.0.1", 2654, 0x08);
+  e = dn.dnaOpen("127.0.0.1", 2654, 0x00);
 
-
-
-  while ( 1 ) Sleep(1);
 
   if (e > 0)
   {
@@ -48,10 +46,16 @@ void main()
     if (csd > 0 ) break;
   }
 
-
   while (1)
   {
-    dn.dnaWrite(csd, "HELLO from Server\r\n", 18, 0, 0);
-    Sleep(1000);
+	e = dn.dnaWrite(csd, "1,3:", 4, 0, 0);
+	e  = dn.dnaRead(csd, buf, 1024, 0, 0);
+	if (e > 0)
+	{
+		buf[e] = 0;
+		printf("%08d : %s\r\n", idx, buf);
+		idx++;
+	}
+	Sleep(1000);
   }
 }
