@@ -56,8 +56,7 @@ namespace wfrc
                     dn.DNAClose(sd);
                 }            
             }
-        private void button2_Click_1(object 
-            sender, EventArgs e)
+        private void button2_Click_1(object sender, EventArgs e)
         {
 
             if (comboBox1.SelectedIndex == comboBox2.SelectedIndex)

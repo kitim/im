@@ -54,7 +54,7 @@ namespace wfrc
         }
         return e;
     }
-   
+    
     public int DNARead(int sd, byte[] buf, int sz, byte[] ip, int port)
     {
         int e = 0;
