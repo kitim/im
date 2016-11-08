@@ -79,7 +79,7 @@ int dnaAccept(int sd, char* ip, int sz)
 	{
 		err_display("accept()");
 	}
-	printf("\n[TCP 서버] 클라이언트 접속 : IP주소=%s, 포트번호=%d\n", inet_ntoa(clientaddr.sin_addr), ntohs(clientaddr.sin_port));
+	printf("\n[TCP ?�버] ?�라?�언???�속 : IP주소=%s, ?�트번호=%d\n", inet_ntoa(clientaddr.sin_addr), ntohs(clientaddr.sin_port));
 	return e;
 }
 
