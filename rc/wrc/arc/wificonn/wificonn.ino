@@ -1,5 +1,4 @@
 #include <SoftwareSerial.h>
-//#include "ESP8266.h"  //위에꺼랑 이거랑 같이쓰면오류안남
 #define BAUD_RATE     115200
 #define UART_BUF_SZ        128
 #define CBUF_COUNT         2
@@ -161,7 +160,6 @@ void loop()
   while ( 1 )
   {
     if ( e == UART_OK )
-<<<<<<< HEAD
     {
       writeATex("AT+CIPSTART", "\"TCP\",\"192.168.0.16\",2654");
       e = UART_FAIL;
@@ -186,32 +184,6 @@ void loop()
     c = srl.read();
     if ( c >= 0 )
     {
-=======
-    {
-      writeATex("AT+CIPSTART", "\"TCP\",\"192.168.0.16\",2654");
-      e = UART_FAIL;
-    }
-    e = readUart(1000, "OK", 2);
-    if ( e == UART_OK )
-    {
-      break;
-    }
-  }
-
-
-
-  bufClear();
-  e = UART_FAIL;
-
-  while(1)
-  {
-    writeATex("ATE1", 0);
-    e = readUart(1000, "OK", 2);
-
-    c = srl.read();
-    if ( c >= 0 )
-    {
->>>>>>> 1a87a53a889910ca58fa18ff794d05fc56e7ed60
       if ( c == '+' )
       {
         cindex = 0;
@@ -228,25 +200,14 @@ void loop()
 
       if ( cindex == CBUF_COUNT )
       {
-        /////// 문자열 분리
-<<<<<<< HEAD
-        ///////
-        ///////
-=======
+        /////// ���ڿ� �и�
         /////// +IPD,4:1,3:    //+IPD,8:101,303;
         ///////
-        
->>>>>>> 1a87a53a889910ca58fa18ff794d05fc56e7ed60
         writeATex("AT", 0);
         e = readUart(1000, "OK", 2);
 
         e = UART_OK;
       }
-<<<<<<< HEAD
-      
-=======
-       
->>>>>>> 1a87a53a889910ca58fa18ff794d05fc56e7ed60
     }
 
     if ( e == UART_OK )
@@ -261,7 +222,3 @@ void loop()
 
   
 }
-<<<<<<< HEAD
-
-=======
->>>>>>> 1a87a53a889910ca58fa18ff794d05fc56e7ed60
