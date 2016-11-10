@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net;
 using System.Net.Sockets;
+using wfrc;
 
 namespace wfrc
 {
@@ -26,7 +27,6 @@ namespace wfrc
            InitializeComponent();
            dn = new dplnet();
         }
-
         private void button1_Click(object sender, EventArgs e)
         {
             if(btn_open_sts ==0)
@@ -45,10 +45,11 @@ namespace wfrc
                     if(csd > 0)
                     {
                         textBox2.Text += "CONNECT RC CAR \r\n";
+                        timer1.Enabled = true;
                     }
                 }
             }
-            else
+                 else
                 {
                     btn_open_sts = 0;
                     button1.Text="접속";
@@ -58,16 +59,20 @@ namespace wfrc
             }
         private void button2_Click_1(object sender, EventArgs e)
         {
+ 
+                if (comboBox1.SelectedIndex == comboBox2.SelectedIndex)
+                    textBox2.Text += " 이동 불가 ";
+                else
+                    textBox2.Text += (comboBox1.SelectedItem + " 에서 " + comboBox2.SelectedItem + "으로 이동 시작...");
+                textBox2.Text += "\r\n";
 
-            if (comboBox1.SelectedIndex == comboBox2.SelectedIndex)
-                textBox2.Text += " 이동 불가 ";
-            else
-                textBox2.Text += (comboBox1.SelectedItem + " 에서 " + comboBox2.SelectedItem + "으로 이동 시작...");
-            textBox2.Text += "\r\n";
-            byte[] wbuf = Encoding.Default.GetBytes(comboBox1.Text + comboBox2.Text);
-            dn.DNAWrite(sd, wbuf, (comboBox1.Text + comboBox2.Text).Length, null, 0);
+
+
+               byte[] wbuf = Encoding.Default.GetBytes(comboBox1.Text + comboBox2.Text);
+                dn.DNAWrite(sd, wbuf, (comboBox1.Text + comboBox2.Text).Length, null, 0);
+       
+
         }
-
         private void timer1_Tick(object sender, EventArgs e)
         {
             int err = 0;
@@ -77,6 +82,7 @@ namespace wfrc
                 buf[err] = 0;
                 textBox2.Text += Encoding.Default.GetString(buf);
                 textBox2.Text += "\r\n";
+
                 textBox2.Select(textBox2.Text.Length, 0);
                 textBox2.ScrollToCaret();
             }
