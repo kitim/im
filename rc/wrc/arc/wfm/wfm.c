@@ -89,3 +89,80 @@ int wfm_write(tagWFM* p, const char* buf, int sz, int msec)
   }
   return e;
 }
+
+int wfm_str_dlmtr(const char* str, const char* dlmtr, int idx, char* out)
+{
+  int e = 0;
+  int i = 0;
+  int _i = 0;
+  int _idx = 0;
+  for ( i=0 ; *(str+i) ; i++, _i++)
+  {
+    *(out+_i) = *(str+i);
+    if ( *(str+i) == *(dlmtr+0)  )
+    {
+      _i = -1;
+      _idx++;
+    }
+    if ( *(str+i+1) == 0 )
+    {
+      _i++;
+      _idx++;
+    }
+    if ( _idx == (idx-1) )
+    {
+      e = _i;
+      *(out+_i) = 0;
+      break;
+    }
+  }
+  return e;
+}
+
+int wfm_read(tagWFM* p, char* buf, int sz)
+{
+  int e = 0;
+  int c = 0;
+  int i = 0;
+  
+  wfm_uwrite(p, "ATE1", 0);
+  e = wfm_uread(p, 100, "OK", 2);
+  if ( e<UART_OK ) return e;
+  
+  for ( i=0 ; i<sz ; )
+  {
+    c = p->uread();
+    if ( c>=0 )
+    {
+      if ( c=='+' )
+      {
+        p->cidx = 0;
+        p->idx = 0;
+      }
+      p->cbuf[p->cidx][p->idx] = c;
+      p->idx++;
+
+      if ( c==':' )
+      {
+        p->cbuf[p->cidx][p->idx-1] = 0;
+        p->cidx++;
+        p->idx=0;
+      }
+
+      if ( p->cidx == CBUF_COUNT )
+      {
+        if ( wfm_str_dlmtr(p->cbuf[0], ",", 1, buf) > 0 )
+        {
+          e = atoi(buf);
+          wfm_str_dlmtr(p->cbuf[1], ":", 1, buf);
+        }
+      }
+    }
+  }
+  wfm_uwrite(p, "ATE0", 0);
+  e = wfm_uread(p, 100, "OK", 2);
+  if ( e<UART_OK ) return e;
+
+  return e;
+}
+

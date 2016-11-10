@@ -32,6 +32,8 @@ int wfm_check_ack(tagWFM* p, const char* ack, int sz);
 int wfm_uread(tagWFM* p, int count, const char* ack, int sz);
 int wfm_uwrite(tagWFM* p, const char* cmd, const char* arg);
 int wfm_write(tagWFM* p, const char* buf, int sz, int msec);
+int wfm_read(tagWFM* p, char* buf, int sz);
+int wfm_str_dlmtr(const char* str, const char* dlmtr, int idx, char* out);
 
 #ifdef __cplusplus
 }
