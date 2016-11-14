@@ -106,11 +106,14 @@
             this.cb_depart.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cb_depart.FormattingEnabled = true;
             this.cb_depart.Items.AddRange(new object[] {
-            "101",
-            "102",
-            "103",
-            "104",
-            "105"});
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "F",
+            "B"});
             this.cb_depart.Location = new System.Drawing.Point(15, 37);
             this.cb_depart.Name = "cb_depart";
             this.cb_depart.Size = new System.Drawing.Size(89, 20);
@@ -121,11 +124,14 @@
             this.cb_arrive.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cb_arrive.FormattingEnabled = true;
             this.cb_arrive.Items.AddRange(new object[] {
-            "101",
-            "102",
-            "103",
-            "104",
-            "105"});
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "F",
+            "B"});
             this.cb_arrive.Location = new System.Drawing.Point(138, 36);
             this.cb_arrive.Name = "cb_arrive";
             this.cb_arrive.Size = new System.Drawing.Size(88, 20);
