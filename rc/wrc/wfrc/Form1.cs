@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net;
 using System.Net.Sockets;
-using wfrc;
+
 
 namespace wfrc
 {
@@ -26,52 +26,58 @@ namespace wfrc
         {
            InitializeComponent();
            dn = new dplnet();
+
         }
         private void button1_Click(object sender, EventArgs e)
         {
-            if(btn_open_sts ==0)
-            { 
+            if (btn_open_sts == 0)
+            {
                 btn_open_sts = 1;
-                button1.Text = "접속해제";
-                byte[] ip = Encoding.Default.GetBytes(textBox1.Text);
-                int type = Int32.Parse(textBox3.Text);
-                int typ = 0;
-                if(type == 1)  typ = 0x08; 
-                sd = dn.DNAOpen(ip, 9000, typ);
-                textBox2.Text += textBox1.Text + " Open \r\n";
-                if(type == 0 && sd>0)
+                button1.Text = "DISCONNECTED";
+                byte[] ip = Encoding.Default.GetBytes("192.168.0.7");
+                int port = 2654;
+                int type = 0;
+                int typ = 0x00;
+                sd = dn.DNAOpen( ip, port, typ);
+                textBox2.Text += "192.168.0.7 Open \r\n";
+                textBox2.Select(textBox2.Text.Length, 0);
+                if (type == 0 && sd > 0)
                 {
-                    csd = dn.DNAAccept(sd, buf, 0);
-                    if(csd > 0)
-                    {
-                        textBox2.Text += "CONNECT RC CAR \r\n";
-                        timer1.Enabled = true;
-                    }
+                    while(true)
+                        {
+                            csd = dn.DNAAccept(sd, ip, 0);
+                            if (csd > 0)
+                             {
+                                textBox2.Text += "CONNECT RC CAR \r\n";
+                                timer1.Enabled = true;
+                                break;
+                            }
+                        }
                 }
+                textBox2.Select(textBox2.Text.Length, 0);
+                textBox2.ScrollToCaret();
             }
-                 else
-                {
-                    btn_open_sts = 0;
-                    button1.Text="접속";
-                    textBox2.Text += textBox1.Text+" CLOSE\r\n";
-                    dn.DNAClose(sd);
-                }            
+            else
+            {
+                btn_open_sts = 0;
+                button1.Text = "CONNECTED";
+                textBox2.Text += "192.168.0.7 CLOSE\r\n";
+                textBox2.Select(textBox2.Text.Length, 0);
+                textBox2.ScrollToCaret();
+                dn.DNAClose(sd);
             }
+        }
         private void button2_Click_1(object sender, EventArgs e)
         {
- 
-                if (comboBox1.SelectedIndex == comboBox2.SelectedIndex)
-                    textBox2.Text += " 이동 불가 ";
-                else
-                    textBox2.Text += (comboBox1.SelectedItem + " 에서 " + comboBox2.SelectedItem + "으로 이동 시작...");
-                textBox2.Text += "\r\n";
-
-
-
-               byte[] wbuf = Encoding.Default.GetBytes(comboBox1.Text + comboBox2.Text);
-                dn.DNAWrite(sd, wbuf, (comboBox1.Text + comboBox2.Text).Length, null, 0);
-       
-
+            if (cb_depart.Text == cb_arrive.Text)
+                   textBox2.Text += " 이동 불가 ";
+            else
+                textBox2.Text += (cb_depart.Text + " 에서 " + cb_arrive.Text + "으로 이동 시작...");
+            textBox2.Text += "\r\n";
+            textBox2.Select(textBox2.Text.Length, 0);
+            textBox2.ScrollToCaret();
+            byte[] wbuf = Encoding.Default.GetBytes(cb_depart.Text+","+cb_arrive.Text);
+            dn.DNAWrite(csd, wbuf, (cb_depart.Text + "," + cb_arrive.Text).Length, null, 0); 
         }
         private void timer1_Tick(object sender, EventArgs e)
         {
