@@ -2,12 +2,12 @@
 #include "wfm.h"
 
 #define RETRY_COUNT    1000
-#define AP_INFO       "\"DAL\",\"01041560094\""
-#define SVR_INFO      "\"TCP\",\"192.168.0.3\",2654"
+#define AP_INFO       "\"DALS\",\"DAL@D510\""
+#define SVR_INFO      "\"TCP\",\"192.168.0.7\",2654"
 
 #define GBUF_SZ        128
 
-SoftwareSerial srl(6,7);
+SoftwareSerial srl(8,9);
 tagWFM  wfm;
 char gbuf[GBUF_SZ];
 
@@ -157,7 +157,7 @@ void loop() {
       memset(buf, 0, UART_BUF_SZ);
       wfm_uwrite(&wfm, "AT+CIPSTART", SVR_INFO);
     }
-    e = wfm_uread_check(&wfm, buf, UART_BUF_SZ, "OK\r\n", 4, 1000);
+    e = wfm_uread_check(&wfm, buf, UART_BUF_SZ, "OK\r\n", 4, 90000);
     if ( e > 0 )
     {
       break;
