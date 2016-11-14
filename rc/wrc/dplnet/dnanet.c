@@ -75,11 +75,6 @@ int dnaAccept(int sd, char* ip, int sz)
 	addrlen = sizeof(clientaddr);
 	e = accept(sd, (SOCKADDR*)&clientaddr, &addrlen);
 
-	if (e == INVALID_SOCKET)
-	{
-		err_display("accept()");
-	}
-	printf("\n[TCP ?œë²„] ?´ë¼?´ì–¸???‘ì† : IPì£¼ì†Œ=%s, ?¬íŠ¸ë²ˆí˜¸=%d\n", inet_ntoa(clientaddr.sin_addr), ntohs(clientaddr.sin_port));
 	return e;
 }
 
