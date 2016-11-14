@@ -41,15 +41,18 @@ namespace wfrc
                 sd = dn.DNAOpen( ip, port, typ);
                 textBox2.Text += "192.168.0.7 Open \r\n";
                 textBox2.Select(textBox2.Text.Length, 0);
-                
-                if (type == 0 && sd > 0) 
+                if (type == 0 && sd > 0)
                 {
-                    csd = dn.DNAAccept(sd, ip, 0);                    
-                    if (csd > 0)
-                    {   
-                        textBox2.Text += "CONNECT RC CAR \r\n";
-                        timer1.Enabled = true;
-                    }
+                    while(true)
+                        {
+                            csd = dn.DNAAccept(sd, ip, 0);
+                            if (csd > 0)
+                             {
+                                textBox2.Text += "CONNECT RC CAR \r\n";
+                                timer1.Enabled = true;
+                                break;
+                            }
+                        }
                 }
                 textBox2.Select(textBox2.Text.Length, 0);
                 textBox2.ScrollToCaret();
@@ -62,29 +65,19 @@ namespace wfrc
                 textBox2.Select(textBox2.Text.Length, 0);
                 textBox2.ScrollToCaret();
                 dn.DNAClose(sd);
-            }            
             }
+        }
         private void button2_Click_1(object sender, EventArgs e)
         {
-
-            if (tb_depart.Text == tb_arrive.Text)
+            if (cb_depart.Text == cb_arrive.Text)
                    textBox2.Text += " 이동 불가 ";
             else
-                textBox2.Text += (tb_depart.Text + " 에서 " + tb_arrive.Text + "으로 이동 시작...");
-                textBox2.Text += "\r\n";
-                textBox2.Select(textBox2.Text.Length, 0);
-                textBox2.ScrollToCaret();
-
-                byte[] wbuf1 = Encoding.Default.GetBytes(tb_depart.Text);
-                dn.DNAWrite(sd, wbuf1, tb_depart.Text.Length, null, 0);
-                byte[] wbuf = Encoding.Default.GetBytes(",");
-                dn.DNAWrite(sd, wbuf, ",".Length, null, 0);
-                byte[] wbuf2 = Encoding.Default.GetBytes(tb_arrive.Text);
-                dn.DNAWrite(sd, wbuf2, tb_arrive.Text.Length, null, 0);
-                
-
-                
-
+                textBox2.Text += (cb_depart.Text + " 에서 " + cb_arrive.Text + "으로 이동 시작...");
+            textBox2.Text += "\r\n";
+            textBox2.Select(textBox2.Text.Length, 0);
+            textBox2.ScrollToCaret();
+            byte[] wbuf = Encoding.Default.GetBytes(cb_depart.Text+","+cb_arrive.Text);
+            dn.DNAWrite(csd, wbuf, (cb_depart.Text + "," + cb_arrive.Text).Length, null, 0); 
         }
         private void timer1_Tick(object sender, EventArgs e)
         {

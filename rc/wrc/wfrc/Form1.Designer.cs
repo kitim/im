@@ -36,8 +36,8 @@
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.tb_depart = new System.Windows.Forms.TextBox();
-            this.tb_arrive = new System.Windows.Forms.TextBox();
+            this.cb_depart = new System.Windows.Forms.ComboBox();
+            this.cb_arrive = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // label1
@@ -101,27 +101,43 @@
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // tb_depart
+            // cb_depart
             // 
-            this.tb_depart.Location = new System.Drawing.Point(17, 32);
-            this.tb_depart.Name = "tb_depart";
-            this.tb_depart.Size = new System.Drawing.Size(80, 21);
-            this.tb_depart.TabIndex = 9;
+            this.cb_depart.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cb_depart.FormattingEnabled = true;
+            this.cb_depart.Items.AddRange(new object[] {
+            "101",
+            "102",
+            "103",
+            "104",
+            "105"});
+            this.cb_depart.Location = new System.Drawing.Point(15, 37);
+            this.cb_depart.Name = "cb_depart";
+            this.cb_depart.Size = new System.Drawing.Size(89, 20);
+            this.cb_depart.TabIndex = 9;
             // 
-            // tb_arrive
+            // cb_arrive
             // 
-            this.tb_arrive.Location = new System.Drawing.Point(138, 32);
-            this.tb_arrive.Name = "tb_arrive";
-            this.tb_arrive.Size = new System.Drawing.Size(88, 21);
-            this.tb_arrive.TabIndex = 10;
+            this.cb_arrive.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cb_arrive.FormattingEnabled = true;
+            this.cb_arrive.Items.AddRange(new object[] {
+            "101",
+            "102",
+            "103",
+            "104",
+            "105"});
+            this.cb_arrive.Location = new System.Drawing.Point(138, 36);
+            this.cb_arrive.Name = "cb_arrive";
+            this.cb_arrive.Size = new System.Drawing.Size(88, 20);
+            this.cb_arrive.TabIndex = 10;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(324, 369);
-            this.Controls.Add(this.tb_arrive);
-            this.Controls.Add(this.tb_depart);
+            this.Controls.Add(this.cb_arrive);
+            this.Controls.Add(this.cb_depart);
             this.Controls.Add(this.textBox2);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.label3);
@@ -144,8 +160,8 @@
     private System.Windows.Forms.TextBox textBox2;
     private System.Windows.Forms.Button button1;
     private System.Windows.Forms.Timer timer1;
-    private System.Windows.Forms.TextBox tb_depart;
-    private System.Windows.Forms.TextBox tb_arrive;
+    private System.Windows.Forms.ComboBox cb_depart;
+    private System.Windows.Forms.ComboBox cb_arrive;
 
   }
 }
