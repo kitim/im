@@ -29,61 +29,25 @@
     private void InitializeComponent()
     {
             this.components = new System.ComponentModel.Container();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
+            this.tb_depart = new System.Windows.Forms.TextBox();
+            this.tb_arrive = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
-            // 
-            // comboBox1
-            // 
-            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
-            "101",
-            "102",
-            "103",
-            "104",
-            "105"});
-            this.comboBox1.Location = new System.Drawing.Point(14, 35);
-            this.comboBox1.MaxLength = 4;
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(87, 20);
-            this.comboBox1.Sorted = true;
-            this.comboBox1.TabIndex = 3;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 12);
+            this.label1.Location = new System.Drawing.Point(159, 9);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(76, 12);
+            this.label1.Size = new System.Drawing.Size(30, 12);
             this.label1.TabIndex = 2;
-            this.label1.Text = "IP ADDRESS";
-            // 
-            // comboBox2
-            // 
-            this.comboBox2.Cursor = System.Windows.Forms.Cursors.Default;
-            this.comboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Items.AddRange(new object[] {
-            "101",
-            "102",
-            "103",
-            "104",
-            "105"});
-            this.comboBox2.Location = new System.Drawing.Point(140, 35);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(87, 20);
-            this.comboBox2.TabIndex = 4;
+            this.label1.Text = "AGV";
             // 
             // label2
             // 
@@ -125,11 +89,11 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(259, 5);
+            this.button1.Location = new System.Drawing.Point(207, 5);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(63, 21);
+            this.button1.Size = new System.Drawing.Size(115, 21);
             this.button1.TabIndex = 2;
-            this.button1.Text = "접속";
+            this.button1.Text = "CONNECTED";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -137,45 +101,32 @@
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // textBox1
+            // tb_depart
             // 
-            this.textBox1.Location = new System.Drawing.Point(84, 5);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(99, 21);
-            this.textBox1.TabIndex = 0;
+            this.tb_depart.Location = new System.Drawing.Point(17, 32);
+            this.tb_depart.Name = "tb_depart";
+            this.tb_depart.Size = new System.Drawing.Size(80, 21);
+            this.tb_depart.TabIndex = 9;
             // 
-            // textBox3
+            // tb_arrive
             // 
-            this.textBox3.Location = new System.Drawing.Point(225, 6);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(30, 21);
-            this.textBox3.TabIndex = 1;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(188, 10);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(34, 12);
-            this.label4.TabIndex = 10;
-            this.label4.Text = "Type";
+            this.tb_arrive.Location = new System.Drawing.Point(138, 32);
+            this.tb_arrive.Name = "tb_arrive";
+            this.tb_arrive.Size = new System.Drawing.Size(88, 21);
+            this.tb_arrive.TabIndex = 10;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(324, 369);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.textBox3);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.tb_arrive);
+            this.Controls.Add(this.tb_depart);
             this.Controls.Add(this.textBox2);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.comboBox2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.button1);
             this.Name = "Form1";
             this.Text = "Form1";
@@ -186,19 +137,15 @@
 
     #endregion
 
-
-    private System.Windows.Forms.ComboBox comboBox1;
     private System.Windows.Forms.Label label1;
-    private System.Windows.Forms.ComboBox comboBox2;
     private System.Windows.Forms.Label label2;
     private System.Windows.Forms.Label label3;
     private System.Windows.Forms.Button button2;
     private System.Windows.Forms.TextBox textBox2;
     private System.Windows.Forms.Button button1;
     private System.Windows.Forms.Timer timer1;
-    private System.Windows.Forms.TextBox textBox1;
-    private System.Windows.Forms.TextBox textBox3;
-    private System.Windows.Forms.Label label4;
+    private System.Windows.Forms.TextBox tb_depart;
+    private System.Windows.Forms.TextBox tb_arrive;
 
   }
 }
