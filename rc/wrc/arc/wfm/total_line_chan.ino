@@ -207,7 +207,13 @@ bool lt_isStop()
   int ret = digitalRead(LT_MODULE_S); // 점 센서
   return ret == 1 ? true : false;
 }
-int ss = lt_isStop();  
+
+int ll = 0;
+int ff = 0;
+int rr = 0;
+int ss = 0;
+int fwd_check[3] = {0, 0, 0};
+int count = 0;
 // 
 void lt_mode_update(char mode)
 {
@@ -216,10 +222,26 @@ void lt_mode_update(char mode)
     car_stop();
     return;
   }
-  int ll = lt_isLeft();
-  int ff = lt_isForward();
-  int rr = lt_isRight();
-  int ss = lt_isStop();  
+  ll = lt_isLeft();
+  ff = lt_isForward();
+  rr = lt_isRight();
+
+  if (  fwd_check[0] == 1 && fwd_check[1] == 0 && fwd_check[2]== 1 )
+  {
+    ss = 0;
+    count ++;
+  }
+  else
+  {
+    count = 0;
+    ss = lt_isStop();
+  }
+
+  if ( count >=1024 )
+  {
+    fwd_check[0] == 1 && fwd_check[1] == 0 && fwd_check[2]== 0;
+    count = 0;
+  }
   
   if (ll&&ff&&rr)
   {
@@ -246,6 +268,9 @@ void lt_mode_update(char mode)
     g_carDirection = CAR_DIR_FW;
     if (ss)
     {
+      fwd_check[0] = 0;
+      fwd_check[1] = 1;
+      fwd_check[2] = 1;
       g_carDirection = CAR_DIR_ST;
     }
   }
@@ -435,23 +460,45 @@ void loop()
       sprintf(dbg, "%c -> %c \r\n", vbuf[0][0], vbuf[1][0]);
       Serial.print(dbg);
     }
-    char stst;
 
     if (vbuf[0][0] == '0')
     {
+      fwd_check[0] = fwd_check[1] = 0;
       car_update(vbuf[0][0]);
       lt_mode_update(vbuf[0][0]);
     }
     if (vbuf[0][0] == '1')
     {
-      stst = '1';
-      lt_mode_update(vbuf[0][0]);
-      if (ss == 1)
+      if ( fwd_check[0] == 0 && fwd_check[1] == 0 && fwd_check[2] == 0 )
       {
-        // 다시 출발하는 알고리즘
+        fwd_check[0] = 1;
+        fwd_check[1] = 0;
+        fwd_check[2] = 0;
       }
-      car_update(stst);  
+      else
+      if (  fwd_check[0] == 0 && fwd_check[1] == 1 && fwd_check[2]== 1 )
+      {
+        fwd_check[0] = 0;
+        fwd_check[1] = 0;
+        fwd_check[2] = 1;
+      }
+      else
+      if (  fwd_check[0] == 0 && fwd_check[1] == 0 && fwd_check[2]== 1 )
+      {
+        fwd_check[0] = 1;
+        fwd_check[1] = 0;
+        fwd_check[2] = 1;
+      }
+      lt_mode_update(vbuf[0][0]);
+      ///////////////////////////////////
+
+      
+      ///////////////////////////////////
+      car_update(vbuf[0][0]);  
     }
+
+
+    #if 0
     if (vbuf[0][0] == '2')
     {
       stst = '2';
@@ -466,6 +513,7 @@ void loop()
           vbuf[0][0] == '0';
         }
       }
-    } 
+    }
+    #endif 
   }
 }
