@@ -13,12 +13,14 @@
 #define CAR_DIR_LF  2   // 좌회전.
 #define CAR_DIR_RF  3   // 우회전
 #define CAR_DIR_ST  4   // 정지.
-
+#define STOP_COUNT  40  
+#define NOMALSPEED  130
+#define LOWSPEED    140
 // 
 // 차량 운행 방향 상태 전역 변수. // 정지 상태.
 int g_carDirection = CAR_DIR_ST; // 
 
-int g_carSpeed = 190; // 220 ~ 255 사이의 값을 넣어주도록 합니다.
+int g_carSpeed = NOMALSPEED; // 220 ~ 255 사이의 값을 넣어주도록 합니다.
 //
 // 주의:  ENA, ENB 는 PWM 지원 포트에 연결한다.
 // 다음 업데이트시 변경합니다.
@@ -187,24 +189,27 @@ void init_line_tracer_modules()
 bool lt_isLeft()
 {
   int ret = digitalRead(LT_MODULE_L);  // 왼쪽 센서
+  g_carSpeed = LOWSPEED;
   return ret == 1 ? true : false;
-
 }
 
 bool lt_isForward()
 {
   int ret = digitalRead(LT_MODULE_F); // 중간 센서
+  Serial.print("Forward\r\n");
   return ret == 1 ? true : false;
 
 }
 bool lt_isRight()
 {
   int ret = digitalRead(LT_MODULE_R); // 오른쪽 센서
+  g_carSpeed = LOWSPEED;
   return ret == 1 ? true : false;
 }
 bool lt_isStop()
 {
   int ret = digitalRead(LT_MODULE_S); // 점 센서
+  Serial.print("Stop\r\n");
   return ret == 1 ? true : false;
 }
 
@@ -230,16 +235,24 @@ void lt_mode_update(char mode)
   {
     ss = 0;
     count ++;
+
   }
   else
   {
     count = 0;
     ss = lt_isStop();
   }
-
-  if ( count >=1024 )
   {
-    fwd_check[0] == 1 && fwd_check[1] == 0 && fwd_check[2]== 0;
+    char dbg[80];
+    sprintf(dbg, "4444444444 -> %d, %d, %d, %d\r\n", fwd_check[0],fwd_check[1],fwd_check[2], count);
+    Serial.print(dbg);
+  }
+
+  if ( count >=STOP_COUNT )
+  {
+    fwd_check[0] = 1;
+    fwd_check[1] = 0;
+    fwd_check[2] = 0;
     count = 0;
   }
   
@@ -266,6 +279,7 @@ void lt_mode_update(char mode)
   if (ff)
   {
     g_carDirection = CAR_DIR_FW;
+    g_carSpeed = NOMALSPEED;
     if (ss)
     {
       fwd_check[0] = 0;
@@ -466,6 +480,11 @@ void loop()
       fwd_check[0] = fwd_check[1] = 0;
       car_update(vbuf[0][0]);
       lt_mode_update(vbuf[0][0]);
+      {
+        char dbg[80];
+        sprintf(dbg, "0000000000 -> %d, %d, %d, %d\r\n", fwd_check[0],fwd_check[1],fwd_check[2], count);
+        Serial.print(dbg);
+      }
     }
     if (vbuf[0][0] == '1')
     {
@@ -474,6 +493,11 @@ void loop()
         fwd_check[0] = 1;
         fwd_check[1] = 0;
         fwd_check[2] = 0;
+        {
+          char dbg[80];
+          sprintf(dbg, "1111111111 -> %d, %d, %d, %d\r\n", fwd_check[0],fwd_check[1],fwd_check[2], count);
+          Serial.print(dbg);
+        }
       }
       else
       if (  fwd_check[0] == 0 && fwd_check[1] == 1 && fwd_check[2]== 1 )
@@ -481,6 +505,11 @@ void loop()
         fwd_check[0] = 0;
         fwd_check[1] = 0;
         fwd_check[2] = 1;
+        {
+          char dbg[80];
+          sprintf(dbg, "2222222222 -> %d, %d, %d, %d\r\n", fwd_check[0],fwd_check[1],fwd_check[2], count);
+          Serial.print(dbg);
+        }
       }
       else
       if (  fwd_check[0] == 0 && fwd_check[1] == 0 && fwd_check[2]== 1 )
@@ -488,6 +517,11 @@ void loop()
         fwd_check[0] = 1;
         fwd_check[1] = 0;
         fwd_check[2] = 1;
+        {
+          char dbg[80];
+          sprintf(dbg, "3333333333 -> %d, %d, %d, %d\r\n", fwd_check[0],fwd_check[1],fwd_check[2], count);
+          Serial.print(dbg);
+        }
       }
       lt_mode_update(vbuf[0][0]);
       ///////////////////////////////////
